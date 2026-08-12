@@ -13,8 +13,12 @@ subscribes to the raw file and refreshes on its own schedule.
 Google Calendar → **Other calendars → + → From URL**, and paste:
 
 ```
-https://raw.githubusercontent.com/sgfdvm/common-ground-calendar/main/common-ground.ics
+https://sgfdvm.github.io/common-ground-calendar/common-ground.ics
 ```
+
+Served via GitHub Pages with `Content-Type: text/calendar`. The raw file also works
+if Pages is ever unavailable, though it is served as `text/plain`:
+`https://raw.githubusercontent.com/sgfdvm/common-ground-calendar/main/common-ground.ics`
 
 Google polls subscribed calendars on its own cadence — usually every 8–24 hours.
 There's no way to force a refresh; the tradeoff is that it never needs a manual import.
