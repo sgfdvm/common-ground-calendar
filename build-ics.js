@@ -184,6 +184,7 @@ function readUids(file) {
 }
 
 const previous = readUids(OUT);
+const previousRaw = fs.existsSync(OUT) ? fs.readFileSync(OUT, 'utf8') : null;
 
 const kb = (f) => (fs.statSync(f).size / 1024).toFixed(0) + 'KB';
 
@@ -198,6 +199,15 @@ const FEED_ONLY = process.env.FEED_ONLY === '1';
 
 // Full file for clients with no import ceiling (Apple Calendar, Thunderbird).
 const full = write(OUT, vevents);
+
+// DTSTAMP tracks when we pulled, not when anything changed, so a re-run with
+// identical events still produces different bytes. Restore the previous file in
+// that case, otherwise CI commits an 861KB no-op diff every single day.
+const withoutStamps = (s) => s.replace(/^DTSTAMP:.*$/gm, '');
+if (previousRaw && withoutStamps(previousRaw) === withoutStamps(fs.readFileSync(OUT, 'utf8'))) {
+  fs.writeFileSync(OUT, previousRaw, 'utf8');
+  full.unchanged = true;
+}
 
 // Google Calendar caps manual imports at 1MB, so also emit halves with margin.
 const mid = Math.ceil(vevents.length / 2);
