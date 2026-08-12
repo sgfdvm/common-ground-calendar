@@ -1,0 +1,41 @@
+name: Refresh calendar feed
+
+on:
+  schedule:
+    # 09:00 UTC daily (~4am Central). Change this to adjust how often the feed updates.
+    - cron: '0 9 * * *'
+  workflow_dispatch: # lets you trigger a run by hand from the Actions tab
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Pull events and rebuild feed
+        env:
+          FEED_ONLY: '1'
+        run: ./refresh.sh
+
+      - name: Commit if the feed actually changed
+        run: |
+          if git diff --quiet -- common-ground.ics; then
+            echo "No change to the feed — nothing to commit."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add common-ground.ics
+          git commit -F .build-summary
+          git push

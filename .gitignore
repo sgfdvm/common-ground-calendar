@@ -1,0 +1,15 @@
+# Raw API dump — 7.5MB, regenerated on every run. Never commit it.
+events.json
+events.json.bak
+
+# Local-only dated snapshots; git history serves this purpose in the repo.
+archive/
+
+# Local-only manual-import splits and cancellation files.
+common-ground-part1.ics
+common-ground-part2.ics
+cancel-*.ics
+
+.build-summary
+node_modules/
+.DS_Store
