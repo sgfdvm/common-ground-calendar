@@ -2,7 +2,7 @@ const fs = require('fs');
 
 const SRC = __dirname + '/events.json';
 const OUT = __dirname + '/common-ground.ics';
-const SITE = 'https://commongroundmeditation.org';
+const SITE = 'https://www.commongroundmeditation.org';
 
 const VENUE = {
   cityCenter: 'Common Ground Meditation Center, 2700 E 26th St, Minneapolis, MN 55406',

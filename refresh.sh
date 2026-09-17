@@ -8,8 +8,8 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-curl -fsS -H 'User-Agent: Mozilla/5.0' \
-  'https://commongroundmeditation.org/api/calendar/events?timezone=America%2FChicago&limit=5000&offset=0' \
+curl -fsSL -H 'User-Agent: Mozilla/5.0' \
+  'https://www.commongroundmeditation.org/api/calendar/events?timezone=America%2FChicago&limit=5000&offset=0' \
   -o events.json
 
 node build-ics.js
